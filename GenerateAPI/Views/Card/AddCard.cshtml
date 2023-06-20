@@ -1,0 +1,93 @@
+﻿@model Entities.Card
+
+@{
+    ViewData["Title"] = "AddCard";
+}
+
+<h1>AddCard</h1>
+
+<h4>Card</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddCard">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CardID" class="control-label"></label>
+                <input asp-for="CardID" class="form-control" />
+                <span asp-validation-for="CardID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CardBatchID" class="control-label"></label>
+                <input asp-for="CardBatchID" class="form-control" />
+                <span asp-validation-for="CardBatchID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CityID" class="control-label"></label>
+                <input asp-for="CityID" class="form-control" />
+                <span asp-validation-for="CityID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MerchantID" class="control-label"></label>
+                <input asp-for="MerchantID" class="form-control" />
+                <span asp-validation-for="MerchantID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FormNumber" class="control-label"></label>
+                <input asp-for="FormNumber" class="form-control" />
+                <span asp-validation-for="FormNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CardEntryDate" class="control-label"></label>
+                <input asp-for="CardEntryDate" class="form-control" />
+                <span asp-validation-for="CardEntryDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CardRequestDate" class="control-label"></label>
+                <input asp-for="CardRequestDate" class="form-control" />
+                <span asp-validation-for="CardRequestDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExpiryDate" class="control-label"></label>
+                <input asp-for="ExpiryDate" class="form-control" />
+                <span asp-validation-for="ExpiryDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmbossName" class="control-label"></label>
+                <input asp-for="EmbossName" class="form-control" />
+                <span asp-validation-for="EmbossName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsDelete" /> @Html.DisplayNameFor(model => model.IsDelete)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastCreatedBy" class="control-label"></label>
+                <input asp-for="LastCreatedBy" class="form-control" />
+                <span asp-validation-for="LastCreatedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastCreatedDateTime" class="control-label"></label>
+                <input asp-for="LastCreatedDateTime" class="form-control" />
+                <span asp-validation-for="LastCreatedDateTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
