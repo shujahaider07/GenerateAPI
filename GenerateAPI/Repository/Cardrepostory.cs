@@ -1,6 +1,7 @@
 ﻿using Entities;
 using GenerateAPI.BasedataBase;
 using IRepository;
+using Microsoft.IdentityModel.Tokens;
 using ViewModel;
 
 namespace GenerateAPI.Repository
@@ -57,9 +58,37 @@ namespace GenerateAPI.Repository
 
         }
 
-        public Task<Card> DeleteCards(CardVm vm)
+        public async Task<Card> DeleteCards(CardVm vm)
         {
-            throw new NotImplementedException();
+            var card = new Card();
+
+            try
+            {
+              var result = _context.Cards.FirstOrDefault(x => x.CardID == vm.CardID);
+
+                if (result == null) return null;
+                result.IsDelete = true;
+                result.Status = vm.Status;
+                result.LastCreatedBy = vm.LastCreatedBy;
+                result.LastCreatedDateTime = vm.LastCreatedDateTime;
+
+                _context.Cards.Update(result);
+               
+                var result2 = await _context.SaveChangesAsync();
+                if (result2 > 0)
+                {
+                    var res = _context.Cards.Where(x => x.CardID == vm.CardID).FirstOrDefault();
+                    card = res;
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return card;
         }
 
         public List<Card> GetCardById(int id)
@@ -71,7 +100,7 @@ namespace GenerateAPI.Repository
         {
             try
             {
-                return _context.Cards.ToList();
+                return _context.Cards.Where(x => x.IsDelete == false).ToList();
             }
             catch (Exception)
             {
@@ -79,9 +108,36 @@ namespace GenerateAPI.Repository
             }
         }
 
-        public Task<Card> UpdateCards(CardVm cardvm)
+        public async Task<Card> UpdateCards(CardVm cardvm)
         {
-            throw new NotImplementedException();
+            Card card = new Card();
+            
+            try
+            {
+              var EditItem =  _context.Cards.FirstOrDefault(x =>x.CardID == cardvm.CardID);
+                if (EditItem == null) return null;
+
+                EditItem.EmbossName = string.IsNullOrEmpty(cardvm.EmbossName) == true ? EditItem.EmbossName : cardvm.EmbossName;
+                EditItem.Status = string.IsNullOrEmpty(cardvm.Status) == true ? EditItem.Status : cardvm.Status;
+                EditItem.CityID = Convert.ToBoolean(cardvm.CityID) == true ? EditItem.CityID : cardvm.CityID;
+                EditItem.FormNumber = string.IsNullOrEmpty(cardvm.FormNumber) == true ? EditItem.FormNumber : cardvm.FormNumber;
+                EditItem.MerchantID = string.IsNullOrEmpty(cardvm.MerchantID) == true ? EditItem.MerchantID : cardvm.MerchantID;
+                _context.Cards.Update(EditItem);
+              
+                var result2 = await _context.SaveChangesAsync();
+                if (result2 > 0)
+                {
+                    var res = _context.Cards.Where(x => x.CardID == cardvm.CardID).FirstOrDefault();
+                    card = res;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return card;
         }
     }
 

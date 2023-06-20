@@ -1,4 +1,5 @@
-﻿using Entities;
+﻿using Azure;
+using Entities;
 using IBusiness;
 using Microsoft.AspNetCore.Mvc;
 using ResponseClass;
@@ -21,7 +22,7 @@ namespace GenerateAPI.Controllers
         [HttpPost("Add_Card")]
         public async Task<IActionResult> AddCard([FromBody] CardVm cardvm)
         {
-            Response response = new Response();
+            ResponseClass.Response response = new ResponseClass.Response();
 
             try
             {
@@ -43,7 +44,7 @@ namespace GenerateAPI.Controllers
         [HttpGet("Get_Card")]
         public async Task<IActionResult> GetCard()
         {
-            Response response = new Response();
+            ResponseClass.Response response = new ResponseClass.Response();
 
             try
             {
@@ -62,6 +63,55 @@ namespace GenerateAPI.Controllers
 
         }
 
+
+        [HttpDelete("Delete_Card")]
+        public async Task<IActionResult> Delete_Card([FromBody] CardVm cardVm)
+        {
+            ResponseClass.Response response = new ResponseClass.Response();
+
+            try
+            {
+                response = await _cardBusiness.DeleteCard(cardVm);
+            }
+            catch (Exception ex)
+            {
+                response.returnId = -1;
+                response.returnCode = "0";
+                response.returnStatus = "Error";
+                response.returnText = ex.InnerException == null ? ex.Message.ToString() : ex.InnerException.ToString() + " " + ex.Message.ToString();
+                response.returnObject = null;
+            }
+
+
+
+
+            return Ok(response);
+        }
+
+
+        [HttpPut("Update_Card")]
+        public async Task<IActionResult> Update_Card([FromBody] CardVm cardVm)
+        {
+            ResponseClass.Response response = new ResponseClass.Response();
+
+            try
+            {
+                response = await _cardBusiness.UpdateCard(cardVm);
+            }
+            catch (Exception ex)
+            {
+                response.returnId = -1;
+                response.returnCode = "0";
+                response.returnStatus = "Error";
+                response.returnText = ex.InnerException == null ? ex.Message.ToString() : ex.InnerException.ToString() + " " + ex.Message.ToString();
+                response.returnObject = null;
+            }
+
+
+
+
+            return Ok(response);
+        }
 
 
     }

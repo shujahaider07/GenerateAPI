@@ -2,8 +2,8 @@
 using IBusiness;
 using IRepository;
 using Newtonsoft.Json;
-using ResponseClass;
 using ViewModel;
+using Response = ResponseClass.Response;
 
 namespace BusinessLogic
 {
@@ -56,9 +56,31 @@ namespace BusinessLogic
             return response;
         }
 
-        public Task<Response> DeleteCard(CardVm cardVm)
+        public async Task<Response> DeleteCard(CardVm cardVm)
         {
-            throw new NotImplementedException();
+            Response response = new Response();
+
+            try
+            {
+                Card cards = await _card.DeleteCards(cardVm);
+                response.returnCode = "1";
+                response.returnStatus = "Success";
+                response.returnObject = cards;
+            }
+            catch (Exception ex)
+            {
+                string req = "JSON Request: Delete " + JsonConvert.SerializeObject(cardVm) + "DeleteContact Bussiness";
+
+                response.returnId = -1;
+                response.returnCode = "0";
+                response.returnStatus = "Error";
+                response.returnText = ex.Message.ToString();
+                response.returnException = ex.InnerException == null ? req + Environment.NewLine + Environment.NewLine + "Message: " + ex.Message.ToString() + Environment.NewLine + Environment.NewLine + "Stack Trace: " + ex.StackTrace.ToString() : req + Environment.NewLine + Environment.NewLine + "Inner Exception: " + ex.InnerException.ToString() + Environment.NewLine + Environment.NewLine + "Message: " + ex.Message.ToString() + Environment.NewLine + Environment.NewLine + "Stack Trace: " + ex.StackTrace.ToString();
+                response.returnObject = null;
+                throw;
+            }
+
+            return response;
         }
 
         public Response GetCard()
@@ -129,9 +151,40 @@ namespace BusinessLogic
             throw new NotImplementedException();
         }
 
-        public Task<Response> UpdateCard(CardVm cardVm)
+        public async Task<Response> UpdateCard(CardVm cardVm)
         {
-            throw new NotImplementedException();
+            Card card = new Card();
+            Response response = new Response();
+            try
+            {
+                Card card1 = await _card.UpdateCards(cardVm);
+
+                if (card1 != null)
+                {
+                    response.returnCode = "1";
+                    response.returnStatus = "Success";
+                    response.returnObject = card;
+                }
+                else
+                {
+                    response.returnId = -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                string req = "JSON Request: Edit " + JsonConvert.SerializeObject(card) + "EditCard Bussiness";
+
+                response.returnId = -1;
+                response.returnCode = "0";
+                response.returnStatus = "Error";
+                response.returnText = ex.Message.ToString();
+                response.returnException = ex.InnerException == null ? req + Environment.NewLine + Environment.NewLine + "Message: " + ex.Message.ToString() + Environment.NewLine + Environment.NewLine + "Stack Trace: " + ex.StackTrace.ToString() : req + Environment.NewLine + Environment.NewLine + "Inner Exception: " + ex.InnerException.ToString() + Environment.NewLine + Environment.NewLine + "Message: " + ex.Message.ToString() + Environment.NewLine + Environment.NewLine + "Stack Trace: " + ex.StackTrace.ToString();
+                response.returnObject = null;
+
+                throw;
+            }
+
+            return response;
         }
     }
 }
