@@ -13,5 +13,10 @@ namespace Entities
         public string? Plastic { get; set; }
         public string? Image { get; set; }
 
+
+        public CardCategory()
+        {
+            CardCategoryName = String.Empty;
+        }
     }
  }
