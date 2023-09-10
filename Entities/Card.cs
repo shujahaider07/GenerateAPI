@@ -19,5 +19,14 @@ namespace Entities
         public DateTime? CardRequestDate { get; set; }
         public DateTime? ExpiryDate { get; set; }
         public string? EmbossName { get; set; }
+
+        public Card()
+        {
+            MerchantID = string.Empty;
+        }
+    
     }
+
+
+
 }
